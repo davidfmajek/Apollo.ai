@@ -1,32 +1,24 @@
-import pandas as pd
+import recommend
+import openai
+import config
+openai.api_key = config.api_key
 
-# Load the dataset
-songs_df = pd.read_csv('songs.csv')
+choice = input("Do you want to get recommendations for a song or an album? (Enter 'song' or 'album'): ").strip().lower()
+if choice == 'song':
+    # Getting song recommendations
+    artist = input("Enter artist name: ")
+    song = input("Enter song name: ")
+    song_recommendations = recommend.generate_SongRecommendations(artist, song)
+    print("\nSong Recommendations:")
+    print(song_recommendations)
 
-# Function to recommend songs by genre
-def recommend_songs(song_title):
-    # Find the genre of the input song
-    song_info = songs_df[songs_df['title'] == song_title]
-    
-    if song_info.empty:
-        return "Song not found."
+elif choice == 'album':
+    # Getting album recommendations
+    artist = input("Enter artist name: ")
+    album = input("Enter album name: ")
+    album_recommendations = recommend.generate_AlbumRecommendations(artist, album)
+    print("\nAlbum Recommendations: ")
+    print(album_recommendations)
 
-    genre = song_info['genre'].values[0]
-    
-    # Recommend songs of the same genre, excluding the original song
-    recommendations = songs_df[songs_df['genre'] == genre]
-    recommendations = recommendations[recommendations['title'] != song_title]
-
-    return recommendations[['title', 'artist']]
-
-# Example usage
-if __name__ == "__main__":
-    user_song = input("Enter a song title to get recommendations: ")
-    recommended_songs = recommend_songs(user_song)
-    
-    if isinstance(recommended_songs, str):
-        print(recommended_songs)
-    else:
-        print("Recommended Songs:")
-        for index, row in recommended_songs.iterrows():
-            print(f"{row['title']} by {row['artist']}")
+else:
+    print("Invalid input. Please enter 'song' or 'album'.")

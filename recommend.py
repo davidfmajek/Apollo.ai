@@ -48,22 +48,5 @@ def get_recommendations():
     # Pass recommendations to the HTML page
     return render_template('index.html', recommendations=recommendations)
 
-
-# Getting song recommendations
-artist = input("Enter artist name: ")
-song = input("Enter song name: ")
-
-recommendations = generate_SongRecommendations(artist, song)
-print("Song Recommendations:")
-print(recommendations)
-
-# Getting album recommenndations
-artist = input("\nEnter artist name: ")
-album = input("Enter album name: ")
-
-recommendations = generate_AlbumRecommendations(artist, album)
-print("Song Recommendations: ")
-print(recommendations)
-
 if __name__ == '__main__':
     app.run(debug=True)
